@@ -1,0 +1,39 @@
+﻿<Window x:Class="KE.StringReplaceWithI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="StringReplaceWithI" Height="600" Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="5">
+                <Button Width="60" Margin="0, 0, 5, 0" Click="CmpBtnNew_OnClick">New</Button>
+                <Button Width="60" Margin="5, 0, 5, 0" Click="CmpBtnOpen_OnClick">Open</Button>
+                <Button Width="60" Margin="5, 0, 5, 0" Click="CmpBtnSave_OnClick">Save</Button>
+                <Button Width="60" Margin="5, 0, 0, 0" Click="CmpBtnSaveAs_OnClick">Save As</Button>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="5">
+                <Label Width="60">Find</Label>
+                <TextBox Width="250" Name="CmpTbFind">
+                    <TextBox.ToolTip>\ ^ $ . [ ] | ( ) ? * + { }</TextBox.ToolTip>
+                </TextBox>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" Margin="5">
+                <Label Width="60">Replace</Label>
+                <TextBox Width="250" Name="CmpTbReplace"/>
+                <Button Width="60" Margin="5, 0, 0, 0" Click="CmpBtnReplace_OnClick">Replace</Button>
+            </StackPanel>
+        </Grid>
+        <TextBox Grid.Row="1" Grid.Column="0" Name="CmpTbFileContent" AcceptsReturn="True" AcceptsTab="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" FontFamily="Courier New" FontSize="15" />
+        <Label Grid.Row="2" Grid.Column="0" Margin="0, 5, 0, 0" Name="CmpLbFilePath"/>
+    </Grid>
+</Window>
