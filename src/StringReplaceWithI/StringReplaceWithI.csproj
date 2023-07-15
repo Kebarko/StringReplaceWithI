@@ -3,7 +3,6 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net7.0-windows</TargetFramework>
-    <Nullable>disable</Nullable>
     <UseWPF>true</UseWPF>
     <RootNamespace>KE.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
     <ApplicationIcon>icon.ico</ApplicationIcon>
