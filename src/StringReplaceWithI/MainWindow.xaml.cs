@@ -1,9 +1,9 @@
 ﻿using KE.StringReplaceWithI.Properties;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -66,7 +66,7 @@ public partial class MainWindow : Window
 
     private async void CmpBtnSave_OnClick(object sender, RoutedEventArgs e)
     {
-        if (File.Exists(CmpLbFilePath.Content.ToString()))
+        if (File.Exists(CmpLbFilePath.Content?.ToString()))
         {
             string path = CmpLbFilePath.Content.ToString();
             using (StreamWriter sw = new StreamWriter(path, false, encoding))
@@ -95,36 +95,79 @@ public partial class MainWindow : Window
 
     private void CmpBtnReplace_OnClick(object sender, RoutedEventArgs e)
     {
-        string[] finds = CmpTbFind.Text.Split('@');
-        string[] replaces = CmpTbReplace.Text.Split('@');
-        string text = CmpTbFileContent.Text;
+        // Extract iterators from replace string
+        string iteratorPattern = @"\\i(\{(-?\d+),\s?(\d+),\s?([+-])\})?"; // \i{init, step, sign}
+        Regex iteratorRegex = new Regex(iteratorPattern);
+        MatchCollection iteratorMatches = iteratorRegex.Matches(CmpTbReplace.Text);
 
-        if (finds.Length != replaces.Length)
+        List<Iterator> iterators = new();
+        foreach (Match match in iteratorMatches)
         {
-            throw new InvalidDataException("Mis-match");
-        }
-
-        int occurences = 0;
-        for (int i = 0; i < finds.Length; i++)
-        {
-            Regex regex = new Regex(finds[i]);
-            MatchCollection matches = regex.Matches(text);
-
-            int iterator = matches.Count;
-            foreach (Match match in matches.Cast<Match>().Reverse())
+            if (match.Success && match.Groups.Count == 5)
             {
-                text = text.Substring(0, match.Index) +
-                       replaces[i].Replace("\\i", iterator.ToString()) +
-                       text.Substring(match.Index + match.Length);
-
-                iterator--;
-                occurences++;
+                if (string.IsNullOrEmpty(match.Groups[1].Value))
+                {
+                    iterators.Add(new());
+                }
+                else
+                {
+                    iterators.Add(new(int.Parse(match.Groups[2].Value), int.Parse(match.Groups[3].Value), match.Groups[4].Value[0]));
+                }
             }
         }
 
-        CmpTbFileContent.Text = text;
+        // Replace all occurences of searched string
+        int count = 0;
+        CmpTbFileContent.Text = Regex.Replace(CmpTbFileContent.Text, CmpTbFind.Text, (match) =>
+        {
+            count++;
 
-        MessageBox.Show(string.Format("{0} occurence(s) replaced.", occurences), "Find and Replace",
+            int iteratorIdx = 0;
+            return Regex.Replace(CmpTbReplace.Text, iteratorPattern, (match) =>
+            {
+                Iterator iterator = iterators[iteratorIdx++];
+                iterator.MoveNext();
+                return iterator.Current.ToString();
+            });
+        });
+
+        MessageBox.Show(string.Format("{0} occurence(s) replaced.", count), "Find and Replace",
             MessageBoxButton.OK, MessageBoxImage.Information);
+    }
+
+    private class Iterator
+    {
+        public int Init { get; }
+        public int Step { get; }
+        public char Sign { get; }
+
+        public int? Current { get; set; }
+
+        public Iterator(int init = 1, int step = 1, char sign = '+')
+        {
+            Init = init;
+            Step = step;
+            Sign = sign;
+        }
+
+        public void MoveNext()
+        {
+            if (Current == null)
+            {
+                Current = Init;
+            }
+            else
+            {
+                switch (Sign)
+                {
+                    case '+':
+                        Current += Step;
+                        break;
+                    case '-':
+                        Current -= Step;
+                        break;
+                }
+            }
+        }
     }
 }
