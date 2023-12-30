@@ -3,37 +3,33 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="StringReplaceWithI" Height="600" Width="800"
         WindowStartupLocation="CenterScreen">
-    <Grid Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Grid.Column="0">
+    <DockPanel LastChildFill="True">
+        <Menu DockPanel.Dock="Top" Height="22">
+            <MenuItem Header="File">
+                <MenuItem Header="New" Click="CmpBtnNew_OnClick"/>
+                <MenuItem Header="Open" Click="CmpBtnOpen_OnClick"/>
+                <MenuItem Header="Save" Click="CmpBtnSave_OnClick"/>
+                <MenuItem Header="Save As" Click="CmpBtnSaveAs_OnClick"/>
+            </MenuItem>
+        </Menu>
+        <Grid DockPanel.Dock="Top" Margin="0, 5, 0, 5">
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="5">
-                <Button Width="60" Margin="0, 0, 5, 0" Click="CmpBtnNew_OnClick">New</Button>
-                <Button Width="60" Margin="5, 0, 5, 0" Click="CmpBtnOpen_OnClick">Open</Button>
-                <Button Width="60" Margin="5, 0, 5, 0" Click="CmpBtnSave_OnClick">Save</Button>
-                <Button Width="60" Margin="5, 0, 0, 0" Click="CmpBtnSaveAs_OnClick">Save As</Button>
-            </StackPanel>
-            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="5">
-                <Label Width="60">Find</Label>
-                <TextBox Width="250" Name="CmpTbFind">
-                    <TextBox.ToolTip>\ ^ $ . [ ] | ( ) ? * + { }</TextBox.ToolTip>
-                </TextBox>
-            </StackPanel>
-            <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" Margin="5">
-                <Label Width="60">Replace</Label>
-                <TextBox Width="250" Name="CmpTbReplace"/>
-                <Button Width="60" Margin="5, 0, 0, 0" Click="CmpBtnReplace_OnClick">Replace</Button>
-            </StackPanel>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="250"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Margin="0, 0, 0, 5">Find</Label>
+            <TextBox Grid.Row="0" Grid.Column="1" Name="CmpTbFind" Margin="0, 0, 0, 5"/>
+            <Label Grid.Row="1" Grid.Column="0" Margin="0, 5, 0, 0">Replace</Label>
+            <TextBox Grid.Row="1" Grid.Column="1" Name="CmpTbReplace" Margin="0, 5, 0, 0"/>
+            <Button Grid.Row="1" Grid.Column="2" Width="60"  Click="CmpBtnReplace_OnClick" Margin="5, 5, 0, 0">Replace</Button>
         </Grid>
-        <TextBox Grid.Row="1" Grid.Column="0" Name="CmpTbFileContent" AcceptsReturn="True" AcceptsTab="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" FontFamily="Courier New" FontSize="15" />
-        <Label Grid.Row="2" Grid.Column="0" Margin="0, 5, 0, 0" Name="CmpLbFilePath"/>
-    </Grid>
+        <Label DockPanel.Dock="Bottom" Margin="2" Name="CmpLbFilePath"/>
+        <TextBox Name="CmpTbFileContent" Margin="5" AcceptsReturn="True" AcceptsTab="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="13" />
+    </DockPanel>
 </Window>
