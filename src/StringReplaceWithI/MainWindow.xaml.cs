@@ -15,6 +15,8 @@ namespace KE.StringReplaceWithI;
 /// </summary>
 public partial class MainWindow : Window
 {
+    private Encoding encoding = Encoding.UTF8;
+
     public MainWindow()
     {
         InitializeComponent();
@@ -39,6 +41,8 @@ public partial class MainWindow : Window
 
     private void CmpBtnNew_OnClick(object sender, RoutedEventArgs e)
     {
+        encoding = Encoding.UTF8;
+
         CmpTbFileContent.Text = string.Empty;
         CmpLbFilePath.Content = string.Empty;
     }
@@ -51,8 +55,9 @@ public partial class MainWindow : Window
         if (openFileDialog.ShowDialog(this) == true)
         {
             string path = openFileDialog.FileName;
-            using (StreamReader sr = new StreamReader(path, GetEncoding(path)))
+            using (StreamReader sr = new StreamReader(path, true))
             {
+                encoding = sr.CurrentEncoding;
                 CmpTbFileContent.Text = sr.ReadToEnd();
                 CmpLbFilePath.Content = openFileDialog.FileName;
             }
@@ -64,7 +69,7 @@ public partial class MainWindow : Window
         if (File.Exists(CmpLbFilePath.Content.ToString()))
         {
             string path = CmpLbFilePath.Content.ToString();
-            using (StreamWriter sw = new StreamWriter(path, false, GetEncoding(path)))
+            using (StreamWriter sw = new StreamWriter(path, false, encoding))
             {
                 await sw.WriteAsync(CmpTbFileContent.Text);
             }
@@ -81,7 +86,7 @@ public partial class MainWindow : Window
         saveFileDialog.Filter = "All Files (*.*)|*.*";
         if (saveFileDialog.ShowDialog(this) == true)
         {
-            using (StreamWriter sw = new StreamWriter(saveFileDialog.FileName, false, Encoding.Default))
+            using (StreamWriter sw = new StreamWriter(saveFileDialog.FileName, false, encoding))
             {
                 await sw.WriteAsync(CmpTbFileContent.Text);
             }
@@ -121,34 +126,5 @@ public partial class MainWindow : Window
 
         MessageBox.Show(string.Format("{0} occurence(s) replaced.", occurences), "Find and Replace",
             MessageBoxButton.OK, MessageBoxImage.Information);
-    }
-
-    /// <summary>
-    /// Determines a text file's encoding by analyzing its byte order mark (BOM).
-    /// Defaults to ASCII when detection of the text file's endianness fails.
-    /// </summary>
-    /// <param name="filename">The text file to analyze.</param>
-    /// <returns>The detected encoding.</returns>
-    private static Encoding GetEncoding(string filename)
-    {
-        // Read the BOM
-        var bom = new byte[4];
-        using (var file = new FileStream(filename, FileMode.Open, FileAccess.Read))
-        {
-            file.Read(bom, 0, 4);
-        }
-
-        // Analyze the BOM
-        if (bom[0] == 0x2b && bom[1] == 0x2f && bom[2] == 0x76)
-            return Encoding.UTF7;
-        if (bom[0] == 0xef && bom[1] == 0xbb && bom[2] == 0xbf)
-            return Encoding.UTF8;
-        if (bom[0] == 0xff && bom[1] == 0xfe)
-            return Encoding.Unicode; //UTF-16LE
-        if (bom[0] == 0xfe && bom[1] == 0xff)
-            return Encoding.BigEndianUnicode; //UTF-16BE
-        if (bom[0] == 0 && bom[1] == 0 && bom[2] == 0xfe && bom[3] == 0xff)
-            return Encoding.UTF32;
-        return Encoding.Default;
     }
 }
