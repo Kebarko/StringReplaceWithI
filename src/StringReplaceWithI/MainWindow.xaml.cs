@@ -145,6 +145,11 @@ public partial class MainWindow : Window
 
         public Iterator(int init = 1, int step = 1, char sign = '+')
         {
+            if (sign != '+' && sign != '-')
+            {
+                throw new ArgumentException("Invalid sign!");
+            }
+
             Init = init;
             Step = step;
             Sign = sign;
