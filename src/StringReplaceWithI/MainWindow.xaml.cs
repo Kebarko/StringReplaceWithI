@@ -131,44 +131,63 @@ public partial class MainWindow : Window
     /// <param name="e">The event arguments.</param>
     private void CmpBtnReplace_OnClick(object sender, RoutedEventArgs e)
     {
-        // Extract iterators from replace string
-        string iteratorPattern = @"\\i(\{(-?\d+),\s?(\d+),\s?([+-])\})?"; // \i{init, step, sign}
-        Regex iteratorRegex = new Regex(iteratorPattern);
-        MatchCollection iteratorMatches = iteratorRegex.Matches(CmpTbReplace.Text);
-
-        List<Iterator> iterators = new();
-        foreach (Match match in iteratorMatches)
+        try
         {
-            if (match.Success && match.Groups.Count == 5)
+            // Extract iterators from replace string
+            string iteratorPattern = @"\\i(\{(-?\d+)(,\s?(\d+))?(,\s?([+-]))?\})?"; // \i{init, step, sign}
+            Regex iteratorRegex = new Regex(iteratorPattern);
+            MatchCollection iteratorMatches = iteratorRegex.Matches(CmpTbReplace.Text);
+
+            List<Iterator> iterators = new();
+            foreach (Match match in iteratorMatches)
             {
-                if (string.IsNullOrEmpty(match.Groups[1].Value))
+                if (match.Success && match.Groups.Count == 7)
                 {
-                    iterators.Add(new());
-                }
-                else
-                {
-                    iterators.Add(new(int.Parse(match.Groups[2].Value), int.Parse(match.Groups[3].Value), match.Groups[4].Value[0]));
+                    int? init = int.TryParse(match.Groups[2].Value, out int result) ? result : null;
+                    int? step = int.TryParse(match.Groups[4].Value, out result) ? result : null;
+                    char? sign = !string.IsNullOrEmpty(match.Groups[6].Value) ? match.Groups[6].Value[0] : null;
+
+                    if (init != null && step != null && sign != null)
+                    {
+                        iterators.Add(new((int)init, (int)step, (char)sign));
+                    }
+                    else if (init != null && step != null)
+                    {
+                        iterators.Add(new((int)init, (int)step));
+                    }
+                    else if (init != null)
+                    {
+                        iterators.Add(new((int)init));
+                    }
+                    else
+                    {
+                        iterators.Add(new());
+                    }
                 }
             }
-        }
 
-        // Replace all occurences of searched string
-        int count = 0;
-        CmpTbFileContent.Text = Regex.Replace(CmpTbFileContent.Text, CmpTbFind.Text, (match) =>
-        {
-            count++;
-
-            int iteratorIdx = 0;
-            return Regex.Replace(CmpTbReplace.Text, iteratorPattern, (match) =>
+            // Replace all occurences of searched string
+            int count = 0;
+            CmpTbFileContent.Text = Regex.Replace(CmpTbFileContent.Text, CmpTbFind.Text, (match) =>
             {
-                Iterator iterator = iterators[iteratorIdx++];
-                iterator.MoveNext();
-                return iterator.Current.ToString();
-            });
-        });
+                count++;
 
-        MessageBox.Show(string.Format("{0} occurence(s) replaced.", count), "Find and Replace",
-            MessageBoxButton.OK, MessageBoxImage.Information);
+                int iteratorIdx = 0;
+                return Regex.Replace(CmpTbReplace.Text, iteratorPattern, (match) =>
+                {
+                    Iterator iterator = iterators[iteratorIdx++];
+                    iterator.MoveNext();
+                    return iterator.Current.ToString();
+                });
+            });
+
+            MessageBox.Show(string.Format("{0} occurence(s) replaced.", count), "Find and Replace",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Find and Replace", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
     /// <summary>
