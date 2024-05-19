@@ -19,9 +19,13 @@ This program can search and replace strings in text just like a regular text edi
 ### Examples of iterators
 
 `\i` - iterator with initial value of `1`, increment `1`, resulting in `1, 2, 3, ...`
+
 `\i{5}` - iterator with initial value of `5`, increment `1`, resulting in `5, 6, 7, ...`
+
 `\i{0, 5}` - iterator with initial value of `0`, increment `5`, resulting in `0, 5, 10, ...`
+
 `\i{0, 5, -}` - iterator with initial value of `0`, decrement `5`, resulting in `0, -5, -10, ...`
+
 `\i{100, 2, -}` - iterator with initial value of `100`, decrement `2`, resulting in `100, 98, 96, ...`
 
 ### Example
