@@ -40,8 +40,8 @@ Replace: `IEEE\i{10, 2}`
 
 Result:
 
-> The Institute of Electrical and Electronics Engineers (`IEEE10`) is a global organization dedicated to advancing technology for the benefit of humanity. `IEEE12` publishes numerous journals and conferences where researchers present their latest findings. Whether it's in the field of robotics, telecommunications, or renewable energy, `IEEE14` plays a pivotal role in shaping the future of technology. Joining IEEE16 provides access to a vast network of professionals and resources, fostering innovation and collaboration. With `IEEE18`'s standards guiding technological development, the world moves towards a more connected and efficient future.
+> The Institute of Electrical and Electronics Engineers (`IEEE10`) is a global organization dedicated to advancing technology for the benefit of humanity. `IEEE12` publishes numerous journals and conferences where researchers present their latest findings. Whether it's in the field of robotics, telecommunications, or renewable energy, `IEEE14` plays a pivotal role in shaping the future of technology. Joining `IEEE16` provides access to a vast network of professionals and resources, fostering innovation and collaboration. With `IEEE18`'s standards guiding technological development, the world moves towards a more connected and efficient future.
 
 ## License
 
-MIT
+This project is licensed under the MIT License.
