@@ -32,7 +32,7 @@ This program can search and replace strings in text just like a regular text edi
 
 Original text:
 
-> The Institute of Electrical and Electronics Engineers (`IEEE`) is a global organization dedicated to advancing technology for the benefit of humanity. `IEEE` publishes numerous journals and conferences where researchers present their latest findings. Whether it's in the field of robotics, telecommunications, or renewable energy, `IEEE` plays a pivotal role in shaping the future of technology. Joining IEEE provides access to a vast network of professionals and resources, fostering innovation and collaboration. With `IEEE`'s standards guiding technological development, the world moves towards a more connected and efficient future.
+> The Institute of Electrical and Electronics Engineers (`IEEE`) is a global organization dedicated to advancing technology for the benefit of humanity. `IEEE` publishes numerous journals and conferences where researchers present their latest findings. Whether it's in the field of robotics, telecommunications, or renewable energy, `IEEE` plays a pivotal role in shaping the future of technology. Joining `IEEE` provides access to a vast network of professionals and resources, fostering innovation and collaboration. With `IEEE`'s standards guiding technological development, the world moves towards a more connected and efficient future.
 
 Find: `IEEE`
 
