@@ -6,7 +6,7 @@ Simple text search and replace tool with optional use of an iterator.
 
 ## Requirements
 
-`.NET 8`
+`.NET 10`
 
 ## Installation
 
